@@ -20,14 +20,12 @@ LABEL \
 # Mysteriously, some files in /etc/raddb have incorrect ownership.
 # Therefore we have to fix it up, and we have to do so
 # in the same layer as the installation (on circleci).
-RUN apk add --no-cache freeradius=${VERSION} openssl && \
-    find /etc/raddb/ -exec chgrp -h radius {} + && \
-    rm -f /etc/raddb/mods-enabled/eap && \
-    echo '$INCLUDE /etc/raddb/users' >> /etc/raddb/mods-config/files/authorize
+RUN apk add --no-cache freeradius openssl freeradius-eap && \
+    find /etc/raddb/ -exec chgrp -h radius {} + 
 
 COPY . /
-RUN /usr/sbin/harden.sh
+#RUN /usr/sbin/harden.sh
 
-USER radius
+USER root
 ENTRYPOINT ["/usr/sbin/radiusd"]
-CMD ["-f"]
+CMD ["-f -X"]

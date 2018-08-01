@@ -16,7 +16,7 @@ LABEL \
     org.label-schema.vcs-ref=${VCS_REF} \
     org.label-schema.version=${VERSION}
 
-RUN apk add --no-cache freeradius-radclient=${VERSION}
+RUN apk add --no-cache freeradius-radclient
 COPY test.conf /root/test.conf
 COPY status_message /root/
 ENTRYPOINT ["radclient"]
